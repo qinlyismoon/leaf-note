@@ -39,6 +39,7 @@ export function getEventsForPlant(
 export function enrichPlantsWithActivity(
   plantList: Plant[],
   events: CareEvent[],
+  presentationByPlant: Record<string, PresentationState>,
   now: Date = new Date(),
 ): PlantWithActivity[] {
   return plantList.map((plant) => {
@@ -49,6 +50,8 @@ export function enrichPlantsWithActivity(
 
     return {
       ...plant,
+      presentationState:
+        presentationByPlant[plant.id] ?? 'suggested_check',
       lastEvent,
       daysSinceLastEvent,
     };
@@ -69,10 +72,4 @@ export function groupPlantsByPresentation(
   );
 
   return { suggestedChecks, recentlyChecked };
-}
-
-export function isPresentationState(
-  value: string,
-): value is PresentationState {
-  return value === 'suggested_check' || value === 'recently_checked';
 }

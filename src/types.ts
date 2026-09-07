@@ -1,5 +1,9 @@
 export type CareEventType = 'checked' | 'watered' | 'not_sure';
 
+export type CareContext = 'personal' | 'shared';
+
+export type AppTab = 'care' | 'library' | 'profile';
+
 /**
  * Developer-facing provenance for sample copy.
  * Not shown in the caregiver UI.
@@ -18,6 +22,7 @@ export type SourcedText = {
 
 /**
  * Explicit mock list presentation — not derived from a care schedule.
+ * Stored per care context for Personal vs Shared.
  */
 export type PresentationState = 'suggested_check' | 'recently_checked';
 
@@ -25,7 +30,10 @@ export type Plant = {
   id: string;
   name: string;
   plantType: string;
+  speciesId: string;
   location: string;
+  /** Short shelf label — max 5 visible chars when editable (Iteration 2+) */
+  identificationLabel: string;
   identification: SourcedText[];
   suggestedCheckRhythm: SourcedText;
   whyCheck: SourcedText;
@@ -34,8 +42,6 @@ export type Plant = {
   howToWater: SourcedText[];
   whenToStop: SourcedText[];
   potDrainageLocation: SourcedText[];
-  /** Mock list grouping only — not a watering schedule rule */
-  presentationState: PresentationState;
 };
 
 export type CareEvent = {
@@ -46,9 +52,15 @@ export type CareEvent = {
 };
 
 export type PlantWithActivity = Plant & {
+  presentationState: PresentationState;
   lastEvent: CareEvent | null;
   daysSinceLastEvent: number | null;
 };
+
+export type PresentationStore = Record<
+  CareContext,
+  Record<string, PresentationState>
+>;
 
 export const CARE_EVENT_LABELS: Record<CareEventType, string> = {
   checked: 'Checked — no water needed',

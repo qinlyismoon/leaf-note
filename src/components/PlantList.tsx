@@ -13,12 +13,10 @@ function slugify(text: string): string {
 
 function PlantSection({
   title,
-  intro,
   plants,
   onSelectPlant,
 }: {
   title: string;
-  intro: string;
   plants: PlantWithActivity[];
   onSelectPlant: (plantId: string) => void;
 }) {
@@ -34,7 +32,6 @@ function PlantSection({
         <h2 id={headingId} className="plant-section__title">
           {title}
         </h2>
-        <p className="plant-section__intro">{intro}</p>
       </div>
       <ul className="plant-list">
         {plants.map((plant) => (
@@ -50,29 +47,27 @@ export function PlantList({
   recentlyChecked,
   onSelectPlant,
 }: PlantListProps) {
+  const empty =
+    suggestedChecks.length === 0 && recentlyChecked.length === 0;
+
   return (
     <div className="plant-list-view">
-      <header className="page-header">
-        <p className="page-header__eyebrow">Temporary care</p>
-        <h1 className="page-header__title">Leafnote</h1>
-        <p className="page-header__lede">
-          Plants in your care. Check the cues before deciding whether to water.
-        </p>
-      </header>
-
-      <PlantSection
-        title="Suggested checks"
-        intro="Look at these plants when you can. Checking does not mean watering."
-        plants={suggestedChecks}
-        onSelectPlant={onSelectPlant}
-      />
-
-      <PlantSection
-        title="Recently checked"
-        intro="A check or watering was recorded recently. Still use the cues if you look again."
-        plants={recentlyChecked}
-        onSelectPlant={onSelectPlant}
-      />
+      {empty ? (
+        <p className="empty-state">No plants in this care context yet.</p>
+      ) : (
+        <>
+          <PlantSection
+            title="Suggested checks"
+            plants={suggestedChecks}
+            onSelectPlant={onSelectPlant}
+          />
+          <PlantSection
+            title="Recently checked"
+            plants={recentlyChecked}
+            onSelectPlant={onSelectPlant}
+          />
+        </>
+      )}
     </div>
   );
 }

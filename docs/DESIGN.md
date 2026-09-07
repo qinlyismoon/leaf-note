@@ -24,6 +24,11 @@ This document records:
 
 It does **not** convert research observations into finalized requirements.
 
+**Product-surface principle:** Use one clear page title and reveal context
+through navigation and state. Do not expose research disclaimers,
+implementation status, deferred-feature notes, or redundant explanatory copy
+in the user-facing interface.
+
 ---
 
 ## 2. Approved design direction
@@ -75,8 +80,8 @@ scope.
 
 | Mode | Behavior |
 |---|---|
-| **Desktop presentation** | Fixed iPhone-proportion **application canvas** (no exterior phone frame). Optional decorative status area: time, Dynamic Island, signal, Wi‑Fi, battery. |
-| **Real mobile** | Full-bleed app; **hide** simulated system status bar; respect `safe-area-inset-*`. |
+| **Desktop presentation** | Fixed iPhone-proportion **application canvas** (no exterior phone frame). Simulated status area at the top of the canvas: time, Dynamic Island, signal, Wi‑Fi, battery. |
+| **Real mobile** | Full-bleed app; **hide** simulated system status bar so it does not duplicate device chrome; respect `safe-area-inset-*`. |
 
 ### 2.4 Plant Library
 
@@ -257,7 +262,7 @@ Approved build scope for the next implementation sequence:
 | Area | Include |
 |---|---|
 | App shell | Three tabs: Care, Plant Library, Profile; icon + text; restrained glass nav |
-| Care | Personal / Shared segmented control |
+| Care | Personal / Shared segmented control; title only (no header lede) |
 | Shared | Existing Desk/Shelf caregiver flow connected here |
 | Personal | Shallow functional list of instances + presentation states |
 | Care interaction | Progressive cards + View all; three outcomes; same-page confirmation; history |

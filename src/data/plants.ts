@@ -7,6 +7,9 @@ import type { Plant } from '../types';
  *
  * Source status is recorded per content group for developers. It is not shown
  * in the caregiver interface.
+ *
+ * These are canonical plant instances shared across Library, Personal Care,
+ * and Shared Space.
  */
 
 export const plants: Plant[] = [
@@ -14,7 +17,9 @@ export const plants: Plant[] = [
     id: 'succulent-desk',
     name: 'Desk succulent',
     plantType: 'Succulent',
+    speciesId: 'species-succulent',
     location: 'Desk',
+    identificationLabel: '书桌',
     identification: [
       {
         text: 'Small succulent on the desk. Soft leaves are the main cue that watering may be needed.',
@@ -97,13 +102,14 @@ export const plants: Plant[] = [
         note: 'Desk location is mock; returning plants after watering is Interview 02.',
       },
     ],
-    presentationState: 'suggested_check',
   },
   {
     id: 'succulent-shelf',
     name: 'Shelf succulent',
     plantType: 'Succulent',
+    speciesId: 'species-succulent',
     location: 'Shelf',
+    identificationLabel: '有托盘',
     identification: [
       {
         text: 'Small succulent on the shelf. Soft leaves are the main cue. This pot is set up differently from the desk plant — see pot notes.',
@@ -184,6 +190,5 @@ export const plants: Plant[] = [
         note: 'Shelf location is mock; returning plants is Interview 02.',
       },
     ],
-    presentationState: 'recently_checked',
   },
 ];

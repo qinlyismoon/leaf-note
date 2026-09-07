@@ -1,20 +1,35 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { plants } from './data/plants';
+import { AppShell } from './components/shell/AppShell';
+import { CareHubHeader } from './components/care/CareHubHeader';
 import { PlantList } from './components/PlantList';
 import { PlantDetail } from './components/PlantDetail';
-import { PrototypeBanner } from './components/PrototypeBanner';
+import { LibraryPlaceholder } from './pages/LibraryPlaceholder';
+import { ProfilePlaceholder } from './pages/ProfilePlaceholder';
 import {
   addCareEvent,
   initializeCareEventsIfEmpty,
 } from './storage/careEvents';
-import type { CareEvent, CareEventType } from './types';
+import {
+  applyRecordToPresentation,
+  countAllSuggestedChecks,
+  countSuggestedChecks,
+  loadPresentationStore,
+} from './storage/presentation';
+import type {
+  AppTab,
+  CareContext,
+  CareEvent,
+  CareEventType,
+  PresentationStore,
+} from './types';
 import {
   enrichPlantsWithActivity,
   getEventsForPlant,
   groupPlantsByPresentation,
 } from './utils/plantStatus';
 
-type View = 'list' | 'detail';
+type CareView = 'list' | 'detail';
 
 function createCareEvent(plantId: string, type: CareEventType): CareEvent {
   return {
@@ -26,16 +41,30 @@ function createCareEvent(plantId: string, type: CareEventType): CareEvent {
 }
 
 export default function App() {
-  const [view, setView] = useState<View>('list');
+  const [activeTab, setActiveTab] = useState<AppTab>('care');
+  const [careContext, setCareContext] = useState<CareContext>('shared');
+  const [careView, setCareView] = useState<CareView>('list');
   const [selectedPlantId, setSelectedPlantId] = useState<string | null>(null);
   const [careEvents, setCareEvents] = useState<CareEvent[]>(() =>
     initializeCareEventsIfEmpty(),
   );
+  const [presentation, setPresentation] = useState<PresentationStore>(() =>
+    loadPresentationStore(),
+  );
   const [lastRecorded, setLastRecorded] = useState<CareEvent | null>(null);
 
+  const personalBadge = countSuggestedChecks(presentation, 'personal');
+  const sharedBadge = countSuggestedChecks(presentation, 'shared');
+  const careBadge = countAllSuggestedChecks(presentation);
+
   const plantsWithActivity = useMemo(
-    () => enrichPlantsWithActivity(plants, careEvents),
-    [careEvents],
+    () =>
+      enrichPlantsWithActivity(
+        plants,
+        careEvents,
+        presentation[careContext],
+      ),
+    [careEvents, presentation, careContext],
   );
 
   const { suggestedChecks, recentlyChecked } = useMemo(
@@ -56,14 +85,28 @@ export default function App() {
     [selectedPlantId, careEvents],
   );
 
+  const handleTabChange = useCallback((tab: AppTab) => {
+    setActiveTab(tab);
+    setCareView('list');
+    setSelectedPlantId(null);
+    setLastRecorded(null);
+  }, []);
+
+  const handleContextChange = useCallback((context: CareContext) => {
+    setCareContext(context);
+    setCareView('list');
+    setSelectedPlantId(null);
+    setLastRecorded(null);
+  }, []);
+
   const handleSelectPlant = useCallback((plantId: string) => {
     setSelectedPlantId(plantId);
     setLastRecorded(null);
-    setView('detail');
+    setCareView('detail');
   }, []);
 
   const handleBack = useCallback(() => {
-    setView('list');
+    setCareView('list');
     setSelectedPlantId(null);
     setLastRecorded(null);
   }, []);
@@ -75,36 +118,62 @@ export default function App() {
       }
 
       const event = createCareEvent(selectedPlantId, type);
-      const updated = addCareEvent(event);
-      setCareEvents(updated);
+      const updatedEvents = addCareEvent(event);
+      setCareEvents(updatedEvents);
       setLastRecorded(event);
+      setPresentation((prev) =>
+        applyRecordToPresentation(prev, careContext, selectedPlantId, type),
+      );
     },
-    [selectedPlantId],
+    [selectedPlantId, careContext],
   );
 
-  return (
-    <div className="app">
-      <PrototypeBanner />
+  const hideNav = activeTab === 'care' && careView === 'detail';
 
-      <main className="app-main">
-        {view === 'list' && (
+  let body: ReactNode = null;
+
+  if (activeTab === 'care') {
+    if (careView === 'detail' && selectedPlant) {
+      body = (
+        <PlantDetail
+          plant={selectedPlant}
+          events={selectedPlantEvents}
+          lastRecorded={lastRecorded}
+          onBack={handleBack}
+          onRecord={handleRecord}
+        />
+      );
+    } else {
+      body = (
+        <>
+          <CareHubHeader
+            context={careContext}
+            personalBadge={personalBadge}
+            sharedBadge={sharedBadge}
+            onContextChange={handleContextChange}
+          />
           <PlantList
             suggestedChecks={suggestedChecks}
             recentlyChecked={recentlyChecked}
             onSelectPlant={handleSelectPlant}
           />
-        )}
+        </>
+      );
+    }
+  } else if (activeTab === 'library') {
+    body = <LibraryPlaceholder />;
+  } else {
+    body = <ProfilePlaceholder />;
+  }
 
-        {view === 'detail' && selectedPlant && (
-          <PlantDetail
-            plant={selectedPlant}
-            events={selectedPlantEvents}
-            lastRecorded={lastRecorded}
-            onBack={handleBack}
-            onRecord={handleRecord}
-          />
-        )}
-      </main>
-    </div>
+  return (
+    <AppShell
+      activeTab={activeTab}
+      careBadge={careBadge}
+      onTabChange={handleTabChange}
+      hideNav={hideNav}
+    >
+      {body}
+    </AppShell>
   );
 }
