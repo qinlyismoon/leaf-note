@@ -1,74 +1,38 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties } from 'react';
 import type { AppTab } from '../../types';
+import { NavIcon } from './NavIcon';
 
 type BottomNavProps = {
   activeTab: AppTab;
-  careBadge: number;
+  /** Numeric badges: Care = own suggested checks; Shared = requests + shared checks. */
+  badges: Partial<Record<AppTab, number>>;
+  /** Dot when there is something new but nothing countable (unread updates). */
+  dots?: Partial<Record<AppTab, boolean>>;
   onChange: (tab: AppTab) => void;
 };
 
-const TABS: {
-  id: AppTab;
-  label: string;
-  icon: (active: boolean) => ReactNode;
-}[] = [
-  {
-    id: 'care',
-    label: 'Care',
-    icon: (active) => (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="bottom-nav__svg">
-        <path
-          d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z"
-          fill={active ? 'currentColor' : 'none'}
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    id: 'library',
-    label: 'Library',
-    icon: (active) => (
-      <i
-        className={`bottom-nav__ri ${active ? 'ri-plant-fill' : 'ri-plant-line'}`}
-        aria-hidden="true"
-      />
-    ),
-  },
-  {
-    id: 'profile',
-    label: 'Profile',
-    icon: (active) => (
-      <svg viewBox="0 0 24 24" aria-hidden="true" className="bottom-nav__svg">
-        <circle
-          cx="12"
-          cy="8"
-          r="3.2"
-          fill={active ? 'currentColor' : 'none'}
-          stroke="currentColor"
-          strokeWidth="1.6"
-        />
-        <path
-          d="M5.5 19c1.6-3 4-4.5 6.5-4.5S16.9 16 18.5 19"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
+const BADGE_NOUN: Partial<Record<AppTab, string>> = {
+  care: 'suggested checks',
+  shared: 'need your attention',
+};
+
+const TABS: { id: AppTab; label: string }[] = [
+  { id: 'care', label: 'Care' },
+  { id: 'shared', label: 'Shared' },
+  { id: 'library', label: 'Library' },
+  { id: 'profile', label: 'Profile' },
 ];
 
-export function BottomNav({ activeTab, careBadge, onChange }: BottomNavProps) {
+export function BottomNav({ activeTab, badges, dots = {}, onChange }: BottomNavProps) {
   return (
     <nav className="bottom-nav" aria-label="Primary">
-      <div className="bottom-nav__glass">
+      <div className="bottom-nav__glass" style={{ '--tab-index': Math.max(0, TABS.findIndex((tab) => tab.id === activeTab)) } as CSSProperties}>
+        <span className="bottom-nav__indicator" aria-hidden="true" />
         {TABS.map((tab) => {
           const active = activeTab === tab.id;
-          const showBadge = tab.id === 'care' && careBadge > 0;
+          const count = badges[tab.id] ?? 0;
+          const showBadge = count > 0;
+          const showDot = !showBadge && Boolean(dots[tab.id]);
 
           return (
             <button
@@ -78,18 +42,21 @@ export function BottomNav({ activeTab, careBadge, onChange }: BottomNavProps) {
               aria-current={active ? 'page' : undefined}
               aria-label={
                 showBadge
-                  ? `${tab.label}, ${careBadge} suggested checks`
-                  : tab.label
+                  ? `${tab.label}, ${count} ${BADGE_NOUN[tab.id] ?? 'new'}`
+                  : showDot
+                    ? `${tab.label}, new updates`
+                    : tab.label
               }
               onClick={() => onChange(tab.id)}
             >
               <span className="bottom-nav__icon-wrap">
-                {tab.icon(active)}
+                <NavIcon tab={tab.id} active={active} />
                 {showBadge && (
-                  <span className="bottom-nav__badge" aria-hidden="true">
-                    {careBadge > 9 ? '9+' : careBadge}
+                  <span key={count} className="bottom-nav__badge" aria-hidden="true">
+                    {count > 9 ? '9+' : count}
                   </span>
                 )}
+                {showDot && <span className="bottom-nav__dot" aria-hidden="true" />}
               </span>
               <span className="bottom-nav__label">{tab.label}</span>
             </button>

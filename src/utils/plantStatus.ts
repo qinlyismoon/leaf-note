@@ -1,3 +1,4 @@
+import { getCheckStatus, isCheckNeeded } from './checkSchedule';
 import type {
   CareEvent,
   Plant,
@@ -36,10 +37,25 @@ export function getEventsForPlant(
     );
 }
 
+/**
+ * One care state for a canonical plant, independent of role or handoff:
+ * "suggested" whenever its check is due today or overdue (date-based, from
+ * the species rhythm and the last Checked / Watered record).
+ */
+export function getCarePresentationState(
+  plantId: string,
+  speciesId: string,
+  events: CareEvent[],
+  now: Date = new Date(),
+): PresentationState {
+  return isCheckNeeded(getCheckStatus(plantId, speciesId, events, now))
+    ? 'suggested_check'
+    : 'recently_checked';
+}
+
 export function enrichPlantsWithActivity(
   plantList: Plant[],
   events: CareEvent[],
-  presentationByPlant: Record<string, PresentationState>,
   now: Date = new Date(),
 ): PlantWithActivity[] {
   return plantList.map((plant) => {
@@ -47,11 +63,12 @@ export function enrichPlantsWithActivity(
     const daysSinceLastEvent = lastEvent
       ? daysBetween(new Date(lastEvent.timestamp), now)
       : null;
+    const checkStatus = getCheckStatus(plant.id, plant.speciesId, events, now);
 
     return {
       ...plant,
-      presentationState:
-        presentationByPlant[plant.id] ?? 'suggested_check',
+      checkStatus,
+      presentationState: isCheckNeeded(checkStatus) ? 'suggested_check' : 'recently_checked',
       lastEvent,
       daysSinceLastEvent,
     };

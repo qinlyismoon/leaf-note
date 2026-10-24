@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 680">
+  <!-- Soft leaf shadow for the L0 ambient field (decorative, original). -->
+  <defs>
+    <filter id="near" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="far" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="16"/></filter>
+  </defs>
+  <g filter="url(#far)" opacity="0.6">
+    <path d="M470 120 Q 330 260 140 560" stroke="#2f5a3c" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(426.4 166.1) rotate(172.2) scale(1.60)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(380.6 219.5) rotate(177.3) scale(1.20)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(380.6 219.5) rotate(93.1) scale(1.40)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(281.9 348.5) rotate(189.6) scale(1.08)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(229.2 423.9) rotate(192.4) scale(1.20)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(229.2 423.9) rotate(55.1) scale(0.98)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(174.1 506.8) rotate(168.1) scale(0.94)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(140 560) rotate(122.3) scale(1.20)" fill="#2f5a3c"/>
+<path d="M470 420 Q 360 450 230 660" stroke="#2f5a3c" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(421.2 441.6) rotate(212.4) scale(1.22)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(421.2 441.6) rotate(91.5) scale(1.32)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(370.6 480.1) rotate(174.8) scale(1.06)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(318.0 535.7) rotate(179.8) scale(1.07)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(318.0 535.7) rotate(79.0) scale(1.06)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(263.6 608.3) rotate(183.8) scale(0.93)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(263.6 608.3) rotate(71.0) scale(1.16)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(230 660) rotate(121.8) scale(1.12)" fill="#2f5a3c"/>
+  </g>
+  <g filter="url(#near)">
+    <path d="M460 -30 Q 320 40 170 250" stroke="#2f5a3c" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(417.3 -5.6) rotate(192.3) scale(1.49)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(374.2 25.3) rotate(203.3) scale(1.04)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(374.2 25.3) rotate(105.5) scale(1.26)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(330.7 62.6) rotate(192.3) scale(1.27)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(330.7 62.6) rotate(77.9) scale(1.16)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(286.6 106.3) rotate(184.3) scale(1.17)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(286.6 106.3) rotate(81.7) scale(1.11)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(242.1 156.4) rotate(72.3) scale(1.14)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(197.2 213.0) rotate(172.0) scale(0.86)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(197.2 213.0) rotate(91.3) scale(0.89)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(170 250) rotate(125.5) scale(1.00)" fill="#2f5a3c"/>
+<path d="M470 200 Q 380 230 270 380" stroke="#2f5a3c" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(388.0 248.8) rotate(100.7) scale(0.90)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(344.1 290.2) rotate(199.1) scale(0.76)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(344.1 290.2) rotate(79.4) scale(1.02)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(298.4 342.9) rotate(193.9) scale(0.74)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(298.4 342.9) rotate(81.1) scale(0.92)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(270 380) rotate(126.3) scale(0.88)" fill="#2f5a3c"/>
+<path d="M440 -10 Q 420 90 330 150" stroke="#2f5a3c" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(423.5 42.5) rotate(154.2) scale(0.81)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(396.2 88.8) rotate(71.5) scale(0.74)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(358.1 128.9) rotate(91.7) scale(0.73)" fill="#2f5a3c"/>
+    <path d="M0 0 C 16 -30 66 -38 104 0 C 66 38 16 30 0 0 Z" transform="translate(330 150) rotate(146.3) scale(0.76)" fill="#2f5a3c"/>
+  </g>
+</svg>

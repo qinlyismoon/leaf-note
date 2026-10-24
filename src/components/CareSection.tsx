@@ -14,7 +14,7 @@ export function CareSection({ title, children }: CareSectionProps) {
 
   return (
     <section className="care-section" aria-labelledby={headingId}>
-      <h2 id={headingId} className="care-section__title">
+      <h2 id={headingId} className="type-eyebrow care-section__title">
         {title}
       </h2>
       <div className="care-section__body">{children}</div>

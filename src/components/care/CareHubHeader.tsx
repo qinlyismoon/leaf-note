@@ -1,28 +1,17 @@
-import type { CareContext } from '../../types';
-import { CareSegmentControl } from '../shell/CareSegmentControl';
+import type { ReactNode } from 'react';
 
 type CareHubHeaderProps = {
-  context: CareContext;
-  personalBadge: number;
-  sharedBadge: number;
-  onContextChange: (context: CareContext) => void;
+  /** Page title; Care and Shared share this header. */
+  title?: string;
+  /** Optional page tool, top-right (Shared: Updates). */
+  action?: ReactNode;
 };
 
-export function CareHubHeader({
-  context,
-  personalBadge,
-  sharedBadge,
-  onContextChange,
-}: CareHubHeaderProps) {
+export function CareHubHeader({ title = 'Care', action }: CareHubHeaderProps) {
   return (
     <header className="care-hub-header">
-      <h1 className="page-header__title">Care</h1>
-      <CareSegmentControl
-        active={context}
-        personalBadge={personalBadge}
-        sharedBadge={sharedBadge}
-        onChange={onContextChange}
-      />
+      <h1 className="page-header__title">{title}</h1>
+      {action}
     </header>
   );
 }

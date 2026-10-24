@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import 'remixicon/fonts/remixicon.css';
 import App from './App';
 import './styles/global.css';
+import './styles/type.css';
 import './styles/app.css';
 
 createRoot(document.getElementById('root')!).render(

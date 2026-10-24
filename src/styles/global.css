@@ -2,20 +2,26 @@
   /* Presentation surround */
   --bg-surround: #d8e0e6;
 
-  /* Warm ivory app surfaces */
-  --bg-page: #f7f2e9;
-  --bg-page-deep: #f3ede3;
-  --bg-surface: #fffcf7;
-  --bg-sunken: #efe8dc;
-  --bg-panel: #f0ebe1;
-  --bg-butter: #f5edd0;
+  /* Near-white app surfaces: one page tone, one panel tint, one pressed tint.
+     page-deep and butter are kept as aliases so existing references resolve. */
+  --bg-page: #f5f8f1;
+  --bg-page-deep: var(--bg-page);
+  --bg-surface: #ffffff;
+  --bg-sunken: #e2eadb;
+  --bg-panel: #edf2e8;
+  --bg-butter: var(--bg-panel);
 
-  --ink: #2f2b26;
-  --ink-muted: #7a7368;
-  --ink-faint: #a39b8f;
+  /* Leaf-dark neutrals, same family as the sage field.
+     Body ≈12–15:1, secondary ≈5.6–7:1, tertiary ≈4.35–5.5:1. */
+  --ink: #1d2a21;
+  --ink-muted: #4e5d52;
+  --ink-faint: #5f6d62;
+  /* Primary actions: deep forest green (white text 10.9:1). */
+  --forest: #25432f;
+  --forest-pressed: #1b3323;
 
-  --line: rgba(47, 43, 38, 0.1);
-  --line-strong: rgba(47, 43, 38, 0.16);
+  --line: rgba(29, 42, 33, 0.1);
+  --line-strong: rgba(29, 42, 33, 0.17);
 
   --sage: #8a9a86;
   --sage-soft: #e4ebe0;
@@ -23,6 +29,35 @@
   --powder-soft: #e4ebef;
   --terracotta: #c27a5c;
   --terracotta-soft: #f0ddd3;
+
+  /* Shared single-choice selection (species, tray, prototype viewing-as).
+     Not used by Care segments or bottom navigation. */
+  --tag-surface: var(--bg-surface);
+  --tag-selection-surface: var(--bg-panel);
+  --tag-border: var(--line);
+  --tag-ink: var(--ink-muted);
+
+  --selection-surface: var(--bg-surface);
+  /* Selection is forest green; terracotta is reserved for "needs attention". */
+  --selection-surface-selected: #eef5e9;
+  --selection-surface-pressed: color-mix(
+    in srgb,
+    var(--bg-sunken) 42%,
+    var(--bg-surface)
+  );
+  --selection-surface-pressed-selected: color-mix(
+    in srgb,
+    var(--bg-sunken) 28%,
+    var(--selection-surface-selected)
+  );
+  --selection-surface-disabled: var(--bg-panel);
+  --selection-border: var(--line);
+  --selection-border-selected: #25432f;
+  --selection-ink: var(--ink);
+  --selection-ink-selected: var(--ink);
+  --selection-ink-disabled: var(--ink-faint);
+  --selection-indicator: #25432f;
+  --selection-focus-ring: #25432f;
 
   --shadow-canvas: 0 18px 50px rgba(55, 70, 82, 0.14),
     0 4px 14px rgba(55, 70, 82, 0.06);
@@ -32,9 +67,11 @@
     0 1px 0 rgba(255, 255, 255, 0.55) inset;
 
   --radius-canvas: 2.35rem;
-  --radius-section: 1.35rem;
-  --radius-card: 1.15rem;
-  --radius-control: 999px;
+  --radius-section: 1.25rem;
+  --radius-card: 1rem;
+  --radius-control: 999px; /* real buttons only */
+  --radius-tag: 0.4rem;
+  --radius-input: 0.875rem;
 
   --font-display: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --font-ui: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
@@ -47,7 +84,57 @@
   --space-6: 1.85rem;
   --space-7: 2.5rem;
 
+  /* ——— Layered glass system (2026-10-23) ———
+     L0 ambient: tinted light behind everything.
+     L1 surface: translucent cards that sit on the ambient layer.
+     L2 float: navigation, sheets, toasts, primary floating controls. */
+  --ambient-base: #f5f3ee;
+  /* One hue only — a fresh sage field (morning leaf light), with a soft lift
+     of light at the top. Natural and optimistic rather than grey. */
+  /* + a soft leaf shadow falling from the top-right (light, not an object)
+     and a barely-there paper grain. Static: never scrolls or animates. */
+  --ambient-leaf-opacity: 0.12;
+  --ambient:
+    url('../assets/ambient/paper-grain.svg') repeat 0 0 / 180px 180px,
+    radial-gradient(120% 50% at 50% -10%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, #f3f7ee 0%, #dfe9d6 100%);
+
+  --glass-1: rgba(255, 255, 255, 0.8);
+  --glass-1-strong: rgba(255, 255, 255, 0.9);
+  --glass-1-edge: rgba(255, 255, 255, 0.85);
+  --glass-1-line: rgba(29, 42, 33, 0.09);
+  --glass-1-shadow:
+    0 1px 2px rgba(30, 52, 36, 0.05),
+    0 10px 26px -8px rgba(30, 52, 36, 0.16);
+  --glass-2: rgba(255, 255, 255, 0.86);
+  --glass-2-shadow:
+    0 2px 6px rgba(38, 46, 34, 0.05),
+    0 18px 44px -10px rgba(38, 46, 34, 0.22);
+  --glass-blur: blur(20px) saturate(1.6);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --status-due: #9a4a30;
+  --status-due-soft: rgba(246, 205, 180, 0.55);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-press: 140ms;
+  --dur-quick: 200ms;
+  --dur-screen: 380ms;
+  --dur-sheet: 460ms;
+  --stagger: 45ms;
+
+  /* Top-level page headers (Care, Shared, Library, Profile) */
+  --page-header-top: 1.75rem;
+  --page-header-gap: 1.85rem;
+
   --nav-height: 4.5rem;
+  --fab-nav-gap: 18px;
+  --bottom-nav-reserve: calc(
+    var(--nav-height) + env(safe-area-inset-bottom, 0px)
+  );
   --status-height: 0px;
   --phone-width: 390px;
   --phone-height: 844px;
@@ -97,6 +184,6 @@ button {
 }
 
 button:focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--terracotta) 70%, var(--ink));
+  outline: 2px solid #25432f;
   outline-offset: 2px;
 }

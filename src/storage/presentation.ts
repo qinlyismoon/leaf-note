@@ -4,21 +4,40 @@ import type {
   PresentationState,
   PresentationStore,
 } from '../types';
-import { plants } from '../data/plants';
+import { SEED_INSTANCES } from '../data/plants';
+import { getRemovedSeedIds } from './plantInstances';
 
 const STORAGE_KEY = 'leafnote-presentation-v1';
 
+function defaultCareIds(): string[] {
+  const removed = new Set(getRemovedSeedIds());
+  return SEED_INSTANCES.filter(
+    (plant) => plant.careConfigured && !removed.has(plant.id),
+  ).map((plant) => plant.id);
+}
+
+/**
+ * Personal owns seed Care plants. Shared starts empty until an incoming
+ * handoff is accepted (presentation keys for shared plants appear on accept).
+ */
 function defaultStore(): PresentationStore {
-  return {
-    personal: {
-      'succulent-desk': 'suggested_check',
-      'succulent-shelf': 'recently_checked',
-    },
-    shared: {
-      'succulent-desk': 'suggested_check',
-      'succulent-shelf': 'recently_checked',
-    },
+  const ids = defaultCareIds();
+  const personal: Record<string, PresentationState> = {};
+  const shared: Record<string, PresentationState> = {};
+
+  // Starting states for seed plants: two need a look, three were seen recently.
+  const SEED_STATES: Record<string, PresentationState> = {
+    'succulent-desk': 'suggested_check',
+    'pothos-living-room': 'suggested_check',
+    'succulent-shelf': 'recently_checked',
+    'monstera-window': 'recently_checked',
+    'snake-plant-hallway': 'recently_checked',
   };
+  ids.forEach((id) => {
+    personal[id] = SEED_STATES[id] ?? 'suggested_check';
+  });
+
+  return { personal, shared };
 }
 
 function isPresentationState(value: unknown): value is PresentationState {
@@ -32,19 +51,28 @@ function normalizeStore(raw: unknown): PresentationStore {
   }
 
   const input = raw as Partial<PresentationStore>;
-  const result = defaultStore();
+  const result: PresentationStore = {
+    personal: { ...defaults.personal },
+    shared: {},
+  };
 
   (['personal', 'shared'] as CareContext[]).forEach((context) => {
     const bucket = input[context];
     if (!bucket || typeof bucket !== 'object') {
       return;
     }
-    plants.forEach((plant) => {
-      const value = bucket[plant.id];
+    for (const [plantId, value] of Object.entries(bucket)) {
       if (isPresentationState(value)) {
-        result[context][plant.id] = value;
+        result[context][plantId] = value;
       }
-    });
+    }
+  });
+
+  // Ensure personal defaults exist for active seeds missing from storage.
+  defaultCareIds().forEach((id) => {
+    if (!result.personal[id]) {
+      result.personal[id] = defaults.personal[id] ?? 'suggested_check';
+    }
   });
 
   return result;
@@ -74,7 +102,7 @@ export function savePresentationStore(store: PresentationStore): void {
  */
 export function applyRecordToPresentation(
   store: PresentationStore,
-  context: CareContext,
+  _context: CareContext,
   plantId: string,
   outcome: CareEventType,
 ): PresentationStore {
@@ -84,13 +112,24 @@ export function applyRecordToPresentation(
   };
 
   if (outcome === 'checked' || outcome === 'watered') {
-    next[context] = {
-      ...next[context],
-      [plantId]: 'recently_checked',
-    };
+    next.personal[plantId] = 'recently_checked';
+    next.shared[plantId] = 'recently_checked';
   }
-  // not_sure: leave presentation state unchanged
 
+  savePresentationStore(next);
+  return next;
+}
+
+export function removePlantPresentation(
+  plantId: string,
+): PresentationStore {
+  const store = loadPresentationStore();
+  const next: PresentationStore = {
+    personal: { ...store.personal },
+    shared: { ...store.shared },
+  };
+  delete next.personal[plantId];
+  delete next.shared[plantId];
   savePresentationStore(next);
   return next;
 }
@@ -98,15 +137,20 @@ export function applyRecordToPresentation(
 export function countSuggestedChecks(
   store: PresentationStore,
   context: CareContext,
+  activePlantIds: string[],
 ): number {
-  return plants.filter(
-    (plant) => store[context][plant.id] === 'suggested_check',
+  return activePlantIds.filter(
+    (plantId) => store[context][plantId] !== 'recently_checked',
   ).length;
 }
 
-export function countAllSuggestedChecks(store: PresentationStore): number {
+export function countAllSuggestedChecks(
+  store: PresentationStore,
+  personalPlantIds: string[],
+  sharedPlantIds: string[],
+): number {
   return (
-    countSuggestedChecks(store, 'personal') +
-    countSuggestedChecks(store, 'shared')
+    countSuggestedChecks(store, 'personal', personalPlantIds) +
+    countSuggestedChecks(store, 'shared', sharedPlantIds)
   );
 }

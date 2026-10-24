@@ -1,0 +1,98 @@
+/**
+ * Leafnote semantic type roles.
+ * Shared by Care Detail, Add Plant, Edit Plant, and related surfaces.
+ * Display serif = identity / important content headings.
+ * UI sans = labels, controls, metadata, actions.
+ */
+
+.type-display-title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: clamp(1.55rem, 4.2vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--ink);
+}
+
+/* Full-page identity titles (Care / Library detail). */
+.type-display-title--page {
+  font-size: clamp(1.65rem, 4.8vw, 1.95rem);
+}
+
+.type-eyebrow {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  color: var(--ink-muted);
+}
+
+.type-content-identity {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+/* Compact identity inside fixed species cards. */
+.type-content-identity--card {
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+
+.type-field-label {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.975rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+.type-control {
+  font-family: var(--font-ui);
+  font-size: 1.05rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  color: var(--ink);
+}
+
+.type-meta {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 0.84rem;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+
+.type-button {
+  font-family: var(--font-ui);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  line-height: 1.2;
+}
+
+/* Section hierarchy shared by multi-section task pages. */
+.type-section-heading,
+.type-subsection-heading {
+  margin: 0;
+  font-family: var(--font-ui);
+    line-height: 1.4;
+}
+.type-section-heading {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: normal;
+  color: var(--ink-muted);
+}
+.type-subsection-heading {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: normal;
+  color: var(--ink-faint);
+}
