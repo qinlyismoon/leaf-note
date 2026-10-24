@@ -51,6 +51,6 @@ npm test         # Run the prototype behavior checks
 
 ## Author
 
-Designed and developed by **Qinly**.
+Designed and developed by **Longyue Qin**.
 
-[View Qinly's portfolio](https://qinlyismoon.github.io/)
+[View Longyue Qin's portfolio](https://qinlyismoon.github.io/)
