@@ -12,17 +12,19 @@ import { PlantImage } from '../library/PlantImage';
 
 type Props = {
   currentUserEmail: string;
+  /** Prefilled caregiver (the other demo person), so a visitor can just press Send. */
+  defaultCaregiverEmail?: string;
   eligibility: HandoffEligibility[];
   onBack: () => void;
   onSend: (input: { plantIds: string[]; caregiverEmail: string }) => string | null;
 };
 
-export function HandoffPage({ currentUserEmail, eligibility, onBack, onSend }: Props) {
+export function HandoffPage({ currentUserEmail, defaultCaregiverEmail = '', eligibility, onBack, onSend }: Props) {
   const [step, setStep] = useState<'select' | 'email'>('select');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [sendOpen, setSendOpen] = useState(false);
   const sending = useRef(false);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(defaultCaregiverEmail);
   const [error, setError] = useState<string | null>(null);
   const available = eligibility.filter(item => item.selectable);
   const selected = available.filter(item => selectedIds.includes(item.plant.id)).map(item => item.plant);
@@ -84,7 +86,7 @@ export function HandoffPage({ currentUserEmail, eligibility, onBack, onSend }: P
             stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="m9 6 6 6-6 6" /></svg>
         </button>
         <label className="sheet-field handoff-recipient"><span className="type-eyebrow">Caregiver email</span>
-          <input type="email" className="type-control sheet-field__input" value={email} placeholder="e.g. jordan@leafnote.local" autoComplete="email" autoFocus
+          <input type="email" className="type-control sheet-field__input" value={email} placeholder="e.g. jordan@leafnote.local" autoComplete="email"
             onChange={e => { setEmail(e.target.value); setError(null); }} /></label>
         {error ? <p className="type-meta sheet-tray__error" role="alert">{error}</p> : null}
         <Button disabled={!selected.length} onClick={() => {

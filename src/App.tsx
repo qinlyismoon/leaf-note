@@ -712,6 +712,7 @@ export default function App() {
       body = (
         <HandoffPage
           currentUserEmail={currentUser.email}
+          defaultCaregiverEmail={users.find((user) => user.id !== currentUser.id)?.email}
           eligibility={eligibility}
           onBack={() => setCareView('list')}
           onSend={handleSendHandoff}
